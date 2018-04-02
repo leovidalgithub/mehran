@@ -1,0 +1,27 @@
+@import 'variables';
+@import 'reset';
+@import 'login';
+@import 'register';
+@import 'hotels';
+
+// angular ng-cloak directive
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+/* ANIMATIONS */
+.animated {
+  animation-name: fadeIn;
+  -webkit-animation-duration: 1.1s;
+  animation-duration: 1.1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+@keyframes fadeIn {
+from {
+    opacity: 0;
+  }
+to {
+    opacity: 1;
+  }
+}

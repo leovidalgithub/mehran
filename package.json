@@ -1,0 +1,39 @@
+{
+  "name": "hotel_booking_app",
+  "version": "1.0.0",
+  "description": "PHP-MySql-based Hotel Booking Application Control",
+  "main": "index.php",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "php",
+    "mysql",
+    "angular",
+    "hotel",
+    "booking",
+    "app"
+  ],
+  "author": "Leo Rdgz",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "browser-sync": "^2.23.6",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^5.0.0",
+    "gulp-babel": "^7.0.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-connect-php7": "^1.0.1",
+    "gulp-csso": "^3.0.1",
+    "gulp-ng-annotate": "^2.1.0",
+    "gulp-postcss": "^7.0.1",
+    "gulp-sass": "^3.2.1",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8"
+  },
+  "dependencies": {
+    "angular": "^1.6.9"
+  }
+}

@@ -1,0 +1,14 @@
+$colorBooked : cornflowerblue;
+$colorApproved : #4fa84f;
+
+$hotelBooked : solid 1.7px $colorBooked;
+$hotelApproved : solid 2.3px $colorApproved;
+
+@mixin button-effect() {
+    box-shadow: .5px .5px 1.5px white;
+    -ms-transform: scale(1.01, 1.01); /* IE 9 */
+    -webkit-transform: scale(1.01, 1.01); /* Safari */
+    transform: scale(1.01, 1.01);
+
+
+}

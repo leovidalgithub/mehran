@@ -68,11 +68,14 @@
         }
       
       }
-      span.err {
+      span.err, span.msg {
         display: block;
         margin: 18px auto;
         color: lightcoral;
         font-size: 1.05rem;
+      }
+      span.msg {
+        color: $colorApproved;
       }
       a {
         display: block;

@@ -1,20 +1,27 @@
 <?php
-	include("built/scripts/dbconn.php");
+	// include("built/scripts/dbconn.php");
 	include("openssl_encrypt.php");
+
+	include_once 'built/scripts/dbConnect.php';
+	include_once 'built\scripts\class.userstype.php';
+	include_once 'built\scripts\login\class.users.php';
 
 	$errorDisplayed="";
 	$username="";
-	
-	if (isset($_POST['submit'])) {
-		$username       = trim($_POST['username']);
-		$username       = strtolower($username);		
-		$fullname       = trim($_POST['fullname']);
-		$newpassword    = trim($_POST['newpassword']);
-		$repeatpassword = trim($_POST['repeatpassword']);
-		$username       = stripslashes($username);
-		$fullname       = stripslashes($fullname);
-		$newpassword    = stripslashes($newpassword);
-		$repeatpassword = stripslashes($repeatpassword);
+
+	//	Getting Users Type
+	$USERSTYPE = new USERSTYPE($DB_connect);
+	$usersType = $USERSTYPE->getAllUsersType();
+
+	if (isset($_POST['btn_register'])) {
+		$username       = stripslashes(strtolower(trim($_POST['username'])));
+		$newpassword    = stripslashes(trim($_POST['newpassword']));
+		$repeatpassword = stripslashes(trim($_POST['repeatpassword']));
+		$fullname       = stripslashes(trim($_POST['fullname']));
+		$address        = stripslashes(trim($_POST['address']));
+		$phone          = stripslashes(trim($_POST['phone']));
+		$email          = stripslashes(trim($_POST['email']));
+		$usertype       = $_POST['usertype'];
 
 		if (empty($username) || empty($newpassword) || empty($repeatpassword) || empty($fullname) ) {
 			$errorDisplayed = "Something is missing!";
@@ -22,40 +29,24 @@
 		} elseif  ($newpassword != $repeatpassword) {
 			$errorDisplayed = "Passwords must be equal!";
 			return;
-			} else {
-
+		} elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			$errorDisplayed = 'Please enter a valid email address!';
+		} else {
 			// password encrypt
 			$newpassword = encrypt_decrypt('encrypt', $newpassword);
 
-			// db connetion
-			$conn = dbConnect();		
-			if ($conn->connect_errno) {
-				$errorDisplayed ="Error connecting to DB";
-			} else {
+			$USERS = new USERS($DB_connect);
 
-				mysqli_set_charset($conn, 'utf8');
-
-				// verify is username already exist
-				$sql = mysqli_query($conn, "SELECT * FROM user WHERE username='$username'");
-				$rowcount = mysqli_num_rows($sql);
-
-				if ($rowcount > 0) { // username already exists
-					$errorDisplayed = "Username already exists!";
-					mysqli_free_result($sql);
-					mysqli_close($conn);
-					return;
-				}
-
-				// inserting the new user
-				$sql = mysqli_query($conn, "INSERT INTO user (`fullname`, `username`, `password`, `type`) VALUES('" . $fullname . "', '" . $username . "', '" . $newpassword . "', '2');");
-
-				mysqli_close($conn);
-
-				$errorDisplayed = "Username created!";
+			if ($USERS->isUsernameAlreadyTaken($username)) {
+				$errorDisplayed = 'Oops! The username is already taken!';
 				return;
+			}
 
-			} // if ($conn)
-		} // if some field is empty
-	} // if $_POST['submit']
-
+			if ($USERS->registerNewUser($username, $newpassword, $fullname, $address, $phone, $email, $usertype)) {
+				header("location: ./login.php?username=$username");
+			} else {
+				$errorDisplayed = 'Oops! Something went wrong!';
+			}
+		}
+	}
 ?>

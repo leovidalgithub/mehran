@@ -6,9 +6,24 @@ angular
 
     .controller('mainController', ['$scope', 'phpServices', '$timeout', ($scope, phpServices, $timeout) => {
 
-        $scope.admin = adminType == 1 ? true : false; // setting either admin or client logged
+		switch (adminType) {
+			case '1':
+				$scope.loggedAs = 'ADMINISTRATOR';
+				break;
+			case '2':
+				$scope.loggedAs = 'EMPLOYEE';
+				break;
+			case '5':
+				$scope.loggedAs = 'MEMBER';
+				break;
+			default:
+				$scope.loggedAs = 'NOT REGISTERD';
+				break;
+		}
+
+		$scope.admin = adminType == 1 ? true : false; // setting either admin or client logged
         $scope.username = username;
-        // userId -> current user id
+		// userId -> current user id
 
         $scope.hotelClicked = function(hotel) { // $SCOPE HOTEL ITEM CLICKED
             if ($scope.admin) { // administrator

@@ -1,0 +1,166 @@
+section {
+	a {
+		cursor: pointer;
+	}
+
+	.jumbotron {
+			background-color: #333;
+			margin: 20px;
+			color: white;
+			padding: 17px;
+			min-height: 85px;
+			h2 {
+				font-size: 1.4rem !important;
+			}
+			p {
+				font-size: 1.1rem;
+				margin-top: 7px;
+				&.loggedAs {
+						color: green !important;
+				}
+				&.displayCat {
+					color: indianred !important;
+				}
+			}
+	}
+
+	h2 {
+		font-size: 1.7rem !important;
+	}
+	.marketing {
+		.paidItems {
+			display: flex;
+			flex-flow: row wrap;
+			justify-content: space-around;
+			align-items: center;
+		}
+		.thisPaidAd {
+			background-color: $backgroundAds;
+			padding: 10px;
+			border-radius: 6px;
+			margin-bottom: 25px;
+			text-align: center;
+			width: 420px;
+			height: 540px;
+			overflow: scroll;
+			* {
+				margin-bottom: 9px;
+			}
+		}
+		.alert-danger {
+			text-align: center;
+			font-size: 1.2rem;
+			margin: 25px auto;
+		}
+		.freeAds {
+			width: 90%;
+			margin-bottom: 35px;
+			.featurette {
+				margin-bottom: 37px;
+				background-color: $backgroundAds;
+				padding: 12px;
+				border-radius: 4px;
+				.featurette-heading {
+					margin-top: 25px !important;
+				}
+				img {
+					width: 100%;
+					max-width: 470px;
+					max-height: 370px;
+				}
+				* {
+					margin-bottom: 9px;
+				}
+			}
+		}
+	}
+		.thisPrice {
+			color: #468415;
+			font-size: 1.3rem;
+			font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+		}
+		.registerDate {
+			color: salmon;
+			font-size: .9rem;
+		}
+		.footer {
+			// margin: 25px auto;
+		}
+ }
+
+
+// section#app {
+//     input[type="text"], textarea { // remove input focus blue border
+//         outline: none;
+//         box-shadow:none !important;
+//         border:1px solid #ccc !important;
+//     }
+
+//     .loggedAs {
+//         color: gray;
+//         font-variant: small-caps;
+//     }
+
+//     .none {
+//         display: none;
+//     }
+//     .loading {
+//         display: inline;
+//     }
+
+//     label {
+//         color: gray;
+//         font-variant: small-caps;
+//         margin-bottom: 15px;
+//     }
+
+//     .panel-primary {
+//         height: 420px;
+//     }
+
+//     .jumbotron {
+//         background-color: #333;
+//         margin: 20px;
+//         color: white;
+//         h1 {
+//             font-size: 3rem;
+//         }
+//     }
+
+//     .well {
+//         overflow-y: auto;
+//         height: 270px;
+//     }
+    
+//     .hotel {
+//         input, span {
+//             transition: all 2s ease;
+//         }
+        
+//         .hotelBooked {
+//             input {
+//                 border: $hotelBooked !important;
+//             }
+//             span {
+//                 color: $colorBooked !important;
+//             }
+//         }
+//         .hotelApproved {
+//             input {
+//                 border: $hotelApproved !important;
+//             }
+//             span {
+//                 color: $colorApproved !important;
+//             }
+//         }
+
+//         &:hover .item * {
+//             cursor: pointer;
+//         }
+
+//         .glyphicon-remove, .glyphicon-time {
+//             font-size: .8rem;
+//             color: lighten(black, 80%) !important;
+//         }
+//     }
+// }

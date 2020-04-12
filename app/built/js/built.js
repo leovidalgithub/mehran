@@ -4,6 +4,8 @@
 angular.module('mhApp', []).config([function () {}]) // not in use
 .run([function () {}]) // not in use
 .controller('mainController', ['$scope', 'phpServices', '$timeout', function ($scope, phpServices, $timeout) {
+  $scope.username = username;
+
   switch (adminType) {
     case '1':
       $scope.loggedAs = 'ADMINISTRATOR';
@@ -22,45 +24,19 @@ angular.module('mhApp', []).config([function () {}]) // not in use
       break;
   }
 
-  $scope.admin = adminType == 1 ? true : false; // setting either admin or client logged
-
-  $scope.username = username; // userId -> current user id
-
-  $scope.hotelClicked = function (hotel) {
-    // $SCOPE HOTEL ITEM CLICKED
-    if ($scope.admin) {
-      // administrator
-      if (!hotel.booked) return;
-      hotel.approved = !hotel.approved;
-    } else {
-      // client
-      hotel.booked = !hotel.booked;
-      hotel.approved = false;
-    }
-
-    $scope.loading = true;
-    phpServices.setPivot(hotel)["finally"](function () {
-      $scope.loading = false;
-    });
+  $scope.selectedCategory = {
+    id: 0,
+    name: 'loading...'
   };
 
-  $scope.userChanged = function () {
-    // $SCOPE OPTION SELECT VALUE CHANGE
-    $scope.loading = true;
-    settingHotelsObj();
-  };
-
-  $scope.logout = function () {
-    // $SCOPE LOGOUT
-    phpServices.logout().then(function (data) {
-      location.replace('login.php');
-    });
+  $scope.dropboxitemselected = function (item) {
+    $scope.selectedCategory = item;
   };
 
   var getAll = function getAll() {
-    // CALLING API GET-ALL TABLES
+    // CALLING API GET ALL DATA
     $scope.loading = true;
-    phpServices.getHotels().then(loadingDataModels)["catch"](function (err) {
+    phpServices.getAllAds().then(loadingDataModels)["catch"](function (err) {
       if (err.status == 403) {}
     })["finally"](function () {
       $scope.loading = false;
@@ -68,66 +44,102 @@ angular.module('mhApp', []).config([function () {}]) // not in use
   };
 
   var loadingDataModels = function loadingDataModels(data) {
-    $scope.hotels = data.data.hotels; // assigning hotels-datamodel object
-
-    $scope.users = data.data.users; // assigning users-datamodel object
-
-    $scope.pivots = data.data.pivots; // assigning pivot user_hotel-datamodel object
-
-    $scope.userSelected = $scope.users[0]; // selecting first user on users select options
-
-    settingHotelsObj();
-  };
-
-  var settingHotelsObj = function settingHotelsObj() {
-    // GETTING SHAPE $SCOPE-HOTELS DATAMODEL OBJECT
-    var currentUserId = $scope.admin == 1 ? $scope.userSelected.id : userId; // getting the currentUserId to show
-
-    $scope.hotels.forEach(function (hotel) {
-      // reseting hotel booked & approved to false and store current userId
-      hotel.booked = false;
-      hotel.approved = false;
-      hotel.currentUserId = currentUserId;
+    $scope.cats = data.data.cats;
+    $scope.ads = data.data.ads;
+    $scope.cats.push({
+      id: '11',
+      name: 'All'
     });
-    var user = $scope.pivots.filter(function (pivot) {
-      return pivot.user_id == currentUserId;
-    }); // getting all rows in pivot table for the given user
-
-    user.forEach(function (pivot) {
-      // setting hotel object according to pivot table info (booked & approved field)
-      var hotel = $scope.hotels.find(function (hotel) {
-        return hotel.id == pivot.hotel_id;
-      });
-      hotel.booked = true;
-      hotel.approved = pivot.approved == 1 ? true : false;
-    });
-    $scope.loading = false;
+    $scope.selectedCategory = $scope.cats[9];
+    console.log($scope.cats);
+    console.log($scope.ads); // $scope.users   = data.data.users;  // assigning users-datamodel object
+    // $scope.pivots  = data.data.pivots; // assigning pivot user_hotel-datamodel object
+    // $scope.userSelected = $scope.users[0]; // selecting first user on users select options
+    // settingHotelsObj();
   };
 
   angular.element(document).ready(function () {
     // INIT FUNCTION AFTER HTML ALREADY LOADED
     $timeout(function () {
       getAll();
-    }, 900);
-  });
+    }, 500);
+  }); // $scope.admin = adminType == 1 ? true : false; // setting either admin or client logged
+  // $scope.username = username;
+  // // userId -> current user id
+  // $scope.hotelClicked = function(hotel) { // $SCOPE HOTEL ITEM CLICKED
+  //     if ($scope.admin) { // administrator
+  //         if(!hotel.booked) return;
+  //         hotel.approved =!hotel.approved;
+  //     } else { // client
+  //         hotel.booked =!hotel.booked;
+  //         hotel.approved = false;
+  //     }
+  //     $scope.loading = true;
+  //     phpServices.setPivot(hotel)
+  //         .finally(() => { $scope.loading = false });
+  //     };
+  //     $scope.userChanged = () => { // $SCOPE OPTION SELECT VALUE CHANGE
+  //         $scope.loading = true;
+  //         settingHotelsObj();
+  //     }
+
+  $scope.logout = function () {
+    // $SCOPE LOGOUT
+    phpServices.logout().then(function (data) {
+      location.replace('login.php');
+    });
+  }; // const getAll = () =>{ // CALLING API GET-ALL TABLES
+  //     $scope.loading = true;
+  //     phpServices.getHotels()
+  //     .then(loadingDataModels)
+  //     .catch((err) => {if (err.status == 403) {}})
+  //     .finally(() => { $scope.loading = false });
+  //     }
+  // const loadingDataModels = (data) => {
+  //     $scope.hotels  = data.data.hotels; // assigning hotels-datamodel object
+  //     $scope.users   = data.data.users;  // assigning users-datamodel object
+  //     $scope.pivots  = data.data.pivots; // assigning pivot user_hotel-datamodel object
+  //     $scope.userSelected = $scope.users[0]; // selecting first user on users select options
+  //     settingHotelsObj();
+  // };
+  // const settingHotelsObj = () => { // GETTING SHAPE $SCOPE-HOTELS DATAMODEL OBJECT
+  //     let currentUserId = $scope.admin == 1 ? $scope.userSelected.id : userId; // getting the currentUserId to show
+  //     $scope.hotels.forEach(hotel => { // reseting hotel booked & approved to false and store current userId
+  //         hotel.booked = false;
+  //         hotel.approved = false;
+  //         hotel.currentUserId = currentUserId;
+  //     });
+  //     let user = $scope.pivots.filter((pivot) => pivot.user_id == currentUserId ); // getting all rows in pivot table for the given user
+  //     user.forEach(pivot => { // setting hotel object according to pivot table info (booked & approved field)
+  //         let hotel = $scope.hotels.find(hotel => hotel.id == pivot.hotel_id);
+  //         hotel.booked = true;
+  //         hotel.approved = pivot.approved == 1 ? true : false;
+  //     });
+  //     $scope.loading = false;            
+  // }
+  // angular.element(document).ready(() => { // INIT FUNCTION AFTER HTML ALREADY LOADED
+  //     $timeout(()=>{ getAll()},900);
+  // });
+
 }]); // API SERVICE
 
 angular.module('mhApp').service('phpServices', ['$http', function ($http) {
   return {
-    getHotels: function getHotels() {
-      return $http.get('built/scripts/getAll.php');
+    getAllAds: function getAllAds() {
+      return $http.get('built/scripts/service.data.php');
     },
-    setPivot: function setPivot(hotel) {
-      var hotel_plain = 'myData=' + JSON.stringify(hotel);
-      return $http({
-        method: 'POST',
-        url: 'built/scripts/set.php',
-        data: hotel_plain,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      });
-    },
+    // getHotels : () => {
+    //     return $http.get('built/scripts/getAll.php');
+    // },
+    // setPivot : (hotel) => {
+    //     let hotel_plain = 'myData=' + JSON.stringify(hotel);
+    //     return $http({
+    //         method: 'POST',
+    //         url: 'built/scripts/set.php',
+    //         data: hotel_plain,
+    //         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    //     });
+    // },
     logout: function logout() {
       return $http.get('built/scripts/sessiondestroy.php');
     }

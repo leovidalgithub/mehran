@@ -56,7 +56,9 @@ exports.cssvendor = () => {
 	return gulp
 		.src([
 				'./app/src/vendor/css/bootstrap.min.css',
-				'./app/src/vendor/css/fontawesome.css'
+				'./app/src/vendor/css/fontawesome.css',
+				'./app/src/vendor/css/ie10-viewport-bug-workaround.css',
+				'./app/src/vendor/css/carousel.css'
 		])
 		.pipe(concat('vendor.css'))
 		.pipe(sass())
@@ -71,6 +73,8 @@ exports.jsvendor = () => {
       "./app/src/vendor/js/jqueryv2.2.4.min.js",
       "./node_modules/angular/angular.js",
       "./app/src/vendor/js/bootstrap.min.js",
+      "./app/src/vendor/js/holder.min.js",
+      "./app/src/vendor/js/ie10-viewport-bug-workaround.js",
     ])
     .pipe(concat("vendor.js"))
     // .pipe(
